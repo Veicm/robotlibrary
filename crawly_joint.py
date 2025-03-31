@@ -69,6 +69,24 @@ class Joint:
             self.servo.set_angle(robotlibrary.config.CRAWLY_DOWN_ANGLE)
         return False
 
+############################curled movement############################
+    def curled_up(self):
+        '''If this object is a knee, it is moved up in one go. As the movement is then finished, it 
+        returns False. It is needed for curled walking.
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_CURLED_UP_ANGLE)
+        return False
+    def curled_down(self):
+        '''If this object is a knee, it is moved down in one go. As the movement is then finished, it 
+        returns False. It is needed for curled walking.
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_CURLED_DOWN_ANGLE)
+        return False
+    
+############################curled movement -end-############################
+
     def forward(self) -> bool:
         '''See the documentation for crawly_leg.py for information.'''
         if not self.left_side:
@@ -106,7 +124,68 @@ class Joint:
                 self.servo.set_angle(self.servo.angle + 2)
                 return True
             return False
-        
+
+
+############################climping############################
+
+    def climb_up(self):
+        '''If this object is a knee, it is moved up in one go. As the movement is then finished, it 
+        returns False. 
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_CLIMB_UP_ANGLE)
+        return False
+    def climb_down(self):
+        '''If this object is a knee, it is moved down in one go. As the movement is then finished, it 
+        returns False. 
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_CLIMB_DOWN_ANGLE)
+        return False
+    
+
+    def climb_forward(self) -> bool:
+        '''See the documentation for crawly_leg.py for information.'''
+        if not self.left_side:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle < robotlibrary.config.CRAWLY_CLIMB_FRONT_FORWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle +2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle < robotlibrary.config.CRAWLY_CLIMB_REAR_FORWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle +2)
+                return True
+            return False
+        else:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle > 180-robotlibrary.config.CRAWLY_CLIMB_FRONT_FORWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle > 180-robotlibrary.config.CRAWLY_CLIMB_REAR_FORWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            return False
+
+    def climb_backward(self) -> bool:
+        '''See the documentation for crawly_leg.py for information.'''
+        if not self.left_side:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle > robotlibrary.config.CRAWLY_CLIMB_FRONT_BACKWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle -2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle > robotlibrary.config.CRAWLY_CLIMB_REAR_BACKWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle -2)
+                return True
+            return False
+        else:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle < 180-robotlibrary.config.CRAWLY_CLIMB_FRONT_BACKWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle < 180-robotlibrary.config.CRAWLY_CLIMB_REAR_BACKWARD_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            return False
+
+
+############################climping -end-############################
+
+
 
     def park(self):
         if self.j_type == robotlibrary.config.KNEE:
@@ -125,6 +204,12 @@ class Joint:
     def curl(self):
         if self.j_type == robotlibrary.config.KNEE:
             self.servo.set_angle(self.max_angle)
+        elif self.j_type == robotlibrary.config.SHOULDER_FRONT or self.j_type == robotlibrary.config.SHOULDER_REAR:
+            self.servo.set_angle(90)
+              
+    def walking_curl(self):
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_CURLED_DOWN_ANGLE)
         elif self.j_type == robotlibrary.config.SHOULDER_FRONT or self.j_type == robotlibrary.config.SHOULDER_REAR:
             self.servo.set_angle(90)
                 
@@ -152,7 +237,7 @@ class Joint:
         
 def main():    
     '''Executed, this sets all servos to 90°.'''
-    j = Joint(robotlibrary.config.KNEE, "rear left", True, True, 1)
+    j = Joint(robotlibrary.config.KNEE, "rear left", True, True, 5)
     j.calibrate()
     
 if __name__ == "__main__":

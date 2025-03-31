@@ -26,7 +26,7 @@ BLACK_DETECTED = 1
 '''Motors and ultrasonic sensor must use consecutive pins. so, f. ex. the left motor uses pins 12 and 13. Use >None< if you don't use the device.'''
 ML=12
 MR=14
-US=None #16
+US=16
 IR=None #11
 SERVO=None #9
 
@@ -63,6 +63,18 @@ CRAWLY_REAR_FORWARD_ANGLE = 90
 CRAWLY_REAR_BACKWARD_ANGLE = 50
 CRAWLY_UP_ANGLE = 75
 CRAWLY_DOWN_ANGLE = 90
+# Configuration for the curled walking
+CRAWLY_CURLED_UP_ANGLE = 130
+CRAWLY_CURLED_DOWN_ANGLE = 140
+
+# Configurations for climbing
+CRAWLY_CLIMB_FRONT_FORWARD_ANGLE = 145
+CRAWLY_CLIMB_FRONT_BACKWARD_ANGLE = 75
+CRAWLY_CLIMB_REAR_FORWARD_ANGLE = 75
+CRAWLY_CLIMB_REAR_BACKWARD_ANGLE = 35
+CRAWLY_CLIMB_UP_ANGLE = 70
+CRAWLY_CLIMB_DOWN_ANGLE = 110
+
 
 ### Type definitions
 SHOULDER_FRONT = 4
