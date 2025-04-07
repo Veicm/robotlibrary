@@ -194,8 +194,8 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             steps = steps-1
 
-        def curled_move_backward(self, steps):
-            '''This makes the crawler move backward on tiptoes in a coordinated way. Most of the funktionality lies in the other classes Joint and Leg'''
+    def curled_move_backward(self, steps):
+        '''This makes the crawler move backward on tiptoes in a coordinated way. Most of the funktionality lies in the other classes Joint and Leg'''
         while steps > 0:
             walk = True
             # First half of one stepcycle.
