@@ -92,29 +92,6 @@ class Leg:
     
 
 ############################curled movement -end-############################
-
-
-############################climbing############################
-
-    def climb_move_forward(self) -> bool:
-        '''This makes a small adjustment in the move forward of this leg. Returns True as long as the movement is NOT finished
-        and returns False, once the movement is finished. This does not move the robot forward, 
-        as the leg is raised in this movement.
-        '''
-        w1 = self.knee.climb_up()
-        w2 = self.shoulder.climb_forward()
-        return w1 or w2
-    
-    def climb_move_backward(self) -> bool:
-        '''This makes a small adjustment in the move backward of this leg. Returns True as long as the movement is NOT finished
-        and returns False, once the movement is finished. This does actually move the robot forward, 
-        as the leg is lowered.
-        '''
-        w1 = self.knee.climb_down()
-        w2 = self.shoulder.climb_backward()
-        return w1 or w2
-
-############################climbing -end-############################
     
     
     def park(self):
