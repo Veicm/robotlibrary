@@ -126,6 +126,128 @@ class Joint:
             return False
 
 
+############################side walking############################
+
+    def side_walking_up(self):
+        '''If this object is a knee, it is moved slowly. As the movement is then finished, it 
+        returns False. 
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_SIDE_WALKING_UP_ANGLE)
+        return False
+    
+    def side_walking_down(self):
+        '''If this object is a knee, it is moved down slowly. As the movement is then finished, it 
+        returns False. 
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_SIDE_WALKING_DOWN_ANGLE)
+        return False
+
+
+    def ahead(self) -> bool:
+        '''See the documentation for crawly_leg.py for information.'''
+        if not self.left_side:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle < robotlibrary.config.CRAWLY_SIDE_WALKING_FRONT_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle > robotlibrary.config.CRAWLY_SIDE_WALKING_REAR_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            return False
+        else:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle > 180-robotlibrary.config.CRAWLY_SIDE_WALKING_FRONT_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle < 180-robotlibrary.config.CRAWLY_SIDE_WALKING_REAR_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            return False
+
+    def center(self) -> bool:
+        '''See the documentation for crawly_leg.py for information.'''
+        if not self.left_side:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle > robotlibrary.config.CRAWLY_SIDE_WALKING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle < robotlibrary.config.CRAWLY_SIDE_WALKING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            return False
+        else:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle < 180-robotlibrary.config.CRAWLY_SIDE_WALKING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle > 180-robotlibrary.config.CRAWLY_SIDE_WALKING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            return False
+
+
+############################side walking -end-############################
+
+    
+###########################Dancing############################
+        
+    def dancing_up(self):
+        '''If this object is a knee, it is moved slowly. As the movement is then finished, it 
+        returns False. 
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_DANCING_UP_ANGLE)
+        return False
+    
+    def dancing_down(self):
+        '''If this object is a knee, it is moved down slowly. As the movement is then finished, it 
+        returns False. 
+        '''
+        if self.j_type == robotlibrary.config.KNEE:
+            self.servo.set_angle(robotlibrary.config.CRAWLY_DANCING_DOWN_ANGLE)
+        return False
+
+
+    def dancing_ahead(self) -> bool:
+        '''See the documentation for crawly_leg.py for information.'''
+        if not self.left_side:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle < robotlibrary.config.CRAWLY_DANCING_FRONT_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle > robotlibrary.config.CRAWLY_DANCING_REAR_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            return False
+        else:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle > 180-robotlibrary.config.CRAWLY_DANCING_FRONT_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle < 180-robotlibrary.config.CRAWLY_DANCING_REAR_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            return False
+
+    def dancing_center(self) -> bool:
+        '''See the documentation for crawly_leg.py for information.'''
+        if not self.left_side:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle > robotlibrary.config.CRAWLY_DANCING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle < robotlibrary.config.CRAWLY_DANCING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            return False
+        else:
+            if self.j_type == robotlibrary.config.SHOULDER_FRONT and self.servo.angle < 180-robotlibrary.config.CRAWLY_DANCING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle + 2)
+                return True
+            if self.j_type == robotlibrary.config.SHOULDER_REAR and self.servo.angle > 180-robotlibrary.config.CRAWLY_DANCING_CENTER_ANGLE:
+                self.servo.set_angle(self.servo.angle - 2)
+                return True
+            return False
+        
+        
+###########################Dancing -end-############################
+
+
 
     def park(self):
         if self.j_type == robotlibrary.config.KNEE:
@@ -170,15 +292,15 @@ class Joint:
     def __set_angle(self,a):
         if not self.left_side:
             self.servo.set_angle(a)
-            #print(f"Winkel rechts: {a}") # Uncomment for debug messages.
+            #print(f"Angle right: {a}") # Uncomment for debug messages.
         else:
             self.servo.set_angle(180-a)
-            #print(f"Winkel links: {a}") # Uncomment for debug messages.
+            #print(f"Angle left: {a}") # Uncomment for debug messages.
         
 def main():    
     '''Executed, this sets all servos to 90°.'''
-    j = Joint(robotlibrary.config.KNEE, "rear left", True, True, 5)
-    j.calibrate()
+    j = Joint(robotlibrary.config.KNEE, "rear left", True, True, 7)
+    j.__set_angle(0)
     
 if __name__ == "__main__":
     # execute only if run as a script

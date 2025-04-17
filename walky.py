@@ -34,7 +34,7 @@ class Walky:
         
     
     def move_forward(self):
-        '''This makes the crawler move forward in a coordinated way. Most of the funktionality lies in the other classes Joint and Leg'''
+        '''This makes the crawler move forward in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
         while True:
             walk = True
             while walk:

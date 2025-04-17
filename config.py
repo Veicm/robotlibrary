@@ -12,7 +12,7 @@ MIN_DUTY = 0 # Minimum duty for the motors. Absolute minimum is 0.
 MIN_SPEED = 45
 MAX_SPEED = 100
 
-########## Waiting time in millliseconds for any debouncing of buttons. 
+########## Waiting time in milliseconds for any debouncing of buttons. 
 '''This defines the waiting time for the debouncing of the buttons. Leave as it is if 
 you don't know what it means.'''
 DEBOUNCE_WAIT = 30
@@ -42,7 +42,7 @@ JS_MIN_DUTY = 260
 ROBOT_NAME = "HAL9000"
 
 ########## Configuration for the Servos in the Crawly and Walky robot
-# If you mix differnet servo types with different duty cycles, you can use the type2 constant for this.
+# If you mix different servo types with different duty cycles, you can use the type2 constant for this.
 SERVO_MIN_DUTY = 1350 # Change only if the servo doesn't move 180°.
 SERVO_MAX_DUTY = 8100 # Change only if the servo doesn't move 180°.
 SERVO_MIN_DUTY_TYPE2 = 1800 # In case you use different types of servos with different duty_cycles. You need to change the source code in crawly_joint.py
@@ -64,8 +64,24 @@ CRAWLY_REAR_BACKWARD_ANGLE = 50
 CRAWLY_UP_ANGLE = 75
 CRAWLY_DOWN_ANGLE = 90
 # Configuration for the curled walking
-CRAWLY_CURLED_UP_ANGLE = 130
+CRAWLY_CURLED_UP_ANGLE = 125
 CRAWLY_CURLED_DOWN_ANGLE = 140
+
+# Configurations for side walking
+CRAWLY_SIDE_WALKING_FRONT_ANGLE = 150
+CRAWLY_SIDE_WALKING_REAR_ANGLE = 30
+CRAWLY_SIDE_WALKING_CENTER_ANGLE = 90
+
+CRAWLY_SIDE_WALKING_UP_ANGLE = 140
+CRAWLY_SIDE_WALKING_DOWN_ANGLE = 170
+
+# Configuration for dancing
+CRAWLY_DANCING_FRONT_ANGLE = 150
+CRAWLY_DANCING_REAR_ANGLE = 30
+CRAWLY_DANCING_CENTER_ANGLE = 90
+
+CRAWLY_DANCING_UP_ANGLE = 120
+CRAWLY_DANCING_DOWN_ANGLE = 170
 
 
 ### Type definitions
@@ -79,3 +95,7 @@ HIP_FORWARD_ANGLE = 110
 HIP_BACKWARD_ANGLE = 80
 KNEE_FORWARD_ANGLE = 180
 KNEE_BACKWARD_ANGLE = 120
+
+########## Configuration for the button
+pressed = 0
+unpressed = 1

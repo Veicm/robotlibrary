@@ -31,7 +31,7 @@ class Servo:
             time.sleep_ms(5)
      
     def set_angle_slowly(self,a):
-        '''If installed, the servor motor will set the angle of the ultrasonic sensor. 90° ist straight ahead.'''
+        '''If installed, the servo motor will set the angle of the ultrasonic sensor. 90° ist straight ahead.'''
         if a > self.__angle:
             if not self.inverted:
                 for i in range(self.__get_duty(self.__angle),self.__get_duty(a)):

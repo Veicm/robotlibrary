@@ -45,7 +45,7 @@ class RC:
     def send(self,t):
         if self.change: 
             #print("sending data ...")
-            data = encode_motor(self.speed, self.turn_val, self.forward, 0)
+            data = encode_motor(self.speed, self.turn_val, self.forward)
             self.server.send(ROBOT_UUID, MOTOR_RX_UUID, data)
             self.change = False
     
@@ -53,11 +53,11 @@ class RC:
         '''This is called when the direction knob is turned to determine the turn or spin. '''
         self.change = True
         if change == Rotary.ROT_CW: # Rotary encoder turned clockwise.
-            self.turn_val = self.turn_val + 10
+            self.turn_val = self.turn_val + 1
             if self.turn_val < 0:
                 self.turn_val = 0            
         elif change == Rotary.ROT_CCW: # Rotary encoder turned anti-clockwise.
-            self.turn_val = self.turn_val - 10
+            self.turn_val = self.turn_val - 1
             if self.turn_val > 0:
                 self.turn_val = 0
         elif change == Rotary.SW_RELEASE: # Button pressed.

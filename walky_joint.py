@@ -1,5 +1,5 @@
 # peripherals
-from robotlibrary.servo_crab import Servo
+from robotlibrary.servo import Servo
 import robotlibrary.config
 from time import sleep, sleep_ms
 
@@ -69,7 +69,7 @@ class Joint:
         if not self.left_side:
             if self.j_type == robotlibrary.config.HIP and self.servo.angle < robotlibrary.config.HIP_FORWARD_ANGLE:
                 self.servo.set_angle(self.servo.angle +2)
-                #print(f"Winkel rechts vorne: {self.servo.angle +2}")
+                #print(f"Angle right Front: {self.servo.angle +2}")
                 return True
             
             return False
@@ -77,7 +77,7 @@ class Joint:
             #print(self.servo.angle)
             if self.j_type == robotlibrary.config.HIP and self.servo.angle > 180-robotlibrary.config.HIP_FORWARD_ANGLE:
                 self.servo.set_angle(self.servo.angle - 2)
-                #print(f"Winkel links vorne: {self.servo.angle -2}")
+                #print(f"Angle right Front: {self.servo.angle -2}")
                 return True
             
             return False
@@ -135,10 +135,10 @@ class Joint:
     def __set_angle(self,a):
         if not self.left_side:
             self.servo.set_angle(a)
-            print(f"Winkel rechts: {a}")
+            print(f"Angle right: {a}")
         else:
             self.servo.set_angle(180-a)
-            print(f"Winkel links: {a}")
+            print(f"Angle left: {a}")
         
 def main():    
     j = Joint(robotlibrary.config.KNEE, "rear left", True, False, 1)

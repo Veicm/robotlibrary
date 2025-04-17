@@ -3,22 +3,20 @@ from robotlibrary.motor import Motor
 from robotlibrary.ultrasonic import Ultra
 from robotlibrary.infrared import IR
 from robotlibrary.servo import Servo
-from robotlibrary.ir_array import IR_Array
-from robotlibrary.pid import PID
 import robotlibrary.config
 
 ########## Bluetooth
 try: 
     import bluetooth
     from robotlibrary.bluetooth.peripheral import BLEPeripheral
-    #from robotlibrary.bluetooth.ble_services_definitions import ROBOT_UUID, MOTOR_RX_UUID, MOTOR_TX_UUID
+    from robotlibrary.bluetooth.ble_services_definitions import ROBOT_UUID, MOTOR_RX_UUID, MOTOR_TX_UUID
     from robotlibrary.bluetooth.parser import decode_motor, encode_motor
     BLUETOOTH_CHIP = True
 except:
     BLUETOOTH_CHIP = False
 
 import machine, sys, utime, random
-from time import sleep, sleep_ms
+from time import sleep
 
 
 class Robot:
@@ -35,37 +33,30 @@ class Robot:
         if robotlibrary.config.SERVO is not None:
             self.servo = Servo(robotlibrary.config.SERVO, False, robotlibrary.config.SERVO_MIN_DUTY, robotlibrary.config.SERVO_MAX_DUTY)
         self.speed = 0
-        self.forward = True
         self.new_speed = 0
         self.last_turn_right = random.randint(0,1) == 0
         if rc and BLUETOOTH_CHIP:
             self.controller = BLEPeripheral(robotlibrary.config.ROBOT_NAME, add_robot_stuff=True)
             def read(buffer: memoryview):
-                speed, turn, forward, button_press = decode_motor(bytes(buffer)) #forward is unused.
+                speed, turn, forward = decode_motor(bytes(buffer))
                 #print(f"Speed: {speed}, Turn: {turn}, forward: {forward}") # uncomment for debugging
-                if forward != self.forward:
-                    self.forward = forward
-                    self.set_forward(forward)
                 if speed != self.speed:
-                    self.set_speed_instantly(speed)                    
+                    self.set_speed_instantly(speed)
                 if turn == 0:
                     self.go_straight()
                 elif turn < 0:
-                    if turn < -50:
+                    if turn < -5:
                         self.spin_left()
                     else:
                         self.turn_left()
                 elif turn > 0:
-                    if turn > 50:
+                    if turn > 5:
                         self.spin_right()
                     else:
                         self.turn_right()
-                if turn > -50 and turn < 50:
-                    self.set_forward(self.forward)
-                    self.go_straight()
-                if button_press:
-                    print("Button pressed.")
-            #print("Ende")                
+                if turn > -5 and turn < 5:    
+                    self.set_forward(forward)
+            print("End")                
             self.controller.register_read_callback(MOTOR_RX_UUID, read)
             self.controller.advertise()
     
@@ -86,7 +77,7 @@ class Robot:
         
     def _drive_instantly(self,dir_l,dir_r):
         '''This abstracted driving function is only called locally by the other functions with better names. 
-        It sets the speed immediatly. Do not call directly!!'''
+        It sets the speed immediately. Do not call directly!!'''
         self.ml.set_forward(dir_l)
         self.mr.set_forward(dir_r)
         self.ml.set_speed(self.new_speed)
@@ -143,10 +134,6 @@ class Robot:
         self.mr.change_speed(5)
         self.ml.change_speed(-5)
         
-    def turn(self, turn):
-        self.mr.change_speed(-turn)
-        self.ml.change_speed(turn)
-        
     def go_straight(self):
         '''Lets the robot go straight on. Usually called when a turn shall end. '''
         self.ml.reset_offset()
@@ -184,12 +171,13 @@ class Robot:
     def stop(self):
         '''Stop the robot slowly by deceleration. '''
         self.set_speed(0)
-        #self._drive(self.ml.forward, self.mr.forward)
+        self._drive(self.ml.forward, self.mr.forward)
         
     def emergency_stop(self):
         '''Stop the robot immediately.'''
         self.ml.set_speed(0)
         self.mr.set_speed(0)
+        # self.set_speed(0)
         self.speed = 0
     
     def ir_detected(self, pin, pin_num):
@@ -239,33 +227,27 @@ class Robot:
                 longest_index=i
                 longest_dist=dist
         return longest_index+1
-    
-    
-    def follow_line(self):
-        pv = 0
-        ir = IR_Array(0,5)
-        pid = PID(ir, 0.01)
-        self.set_speed(80)
-        while True:
-            control = int(round(pid.pid_controller()))
-            pv += control * 0.01
-            print(control)
-            self.mr.set_speed(self.speed - control)
-            self.ml.set_speed(self.speed + control)
-            sleep_ms(10)
-        
-            
         
         
 def main():
-
     r = Robot(False)
-    r.follow_line()
-        
-
-    print(err)
-    r.emergency_stop()
-    print("stop")
+    r.get_smallest_distance()
+    obstacle_detected = False
+    new_speed = 100
+    speed_now = 0
+    min_distance = 15
+    while new_speed <= new_speed and not obstacle_detected:
+        r.set_speed_instantly(speed_now)
+        utime.sleep_ms(10+int(speed_now/2))
+        speed_now += 1
+        if r.get_dist() < min_distance:
+            obstacle_detected = True
+    if obstacle_detected:
+        # Stop or turn or whatever
+        obstacle_detected = False
+    
+    while True:
+        utime.sleep_ms(500)
     
 if __name__ == "__main__":
     # execute only if run as a script

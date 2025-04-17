@@ -13,6 +13,8 @@ class Leg:
         if not right and not front:
             self.shoulder = Joint(robotlibrary.config.SHOULDER_REAR, name, True, False, pin)
         self.knee = Joint(robotlibrary.config.KNEE, name, False, False, pin+1)
+
+        self.right = right
         
     def forward_move_forward(self) -> bool:
         '''This makes a small adjustment in the move forward of this leg. Returns True as long as the movement is NOT finished
@@ -92,10 +94,96 @@ class Leg:
     
 
 ############################curled movement -end-############################
+
+
+############################side walking############################
+
+    def left_move_ahead(self) -> bool:
+        '''This makes the leg go to the very front or very back of the robot depended on the position of the shoulder.
+        The knee is raised or lowered depended on the side where it is mounted on.
+        This is used to move the robot to the left.
+        '''
+        if self.right:
+            w1 = self.knee.side_walking_up()
+        else:
+            w1 = self.knee.side_walking_down()
+        w2 = self.shoulder.ahead()
+        return w1 or w2
+    
+    def left_move_center(self) -> bool:
+        '''This makes the leg go to the center, which means setting the servo on 90 degrees.
+        The knee is raised or lowered depended on the side where it is mounted on.
+        This is used to move the robot to the left.
+        '''
+        if self.right:
+            w1 = self.knee.side_walking_down()
+        else:
+            w1 = self.knee.side_walking_up()
+        w2 = self.shoulder.center()
+        return w1 or w2
+    
+
+    def right_move_ahead(self) -> bool:
+        '''This makes the leg go to the very front or very back of the robot depended on the position of the shoulder.
+        The knee is raised or lowered depended on the side where it is mounted on.
+        This is used to move the robot to the right.
+        '''
+        if self.right:
+            w1 = self.knee.side_walking_down()
+        else:
+            w1 = self.knee.side_walking_up()
+        w2 = self.shoulder.ahead()
+        return w1 or w2
+ 
+    def right_move_center(self) -> bool:
+        '''This makes the leg go to the center, which means setting the servo on 90 degrees.
+        The knee is raised or lowered depended on the side where it is mounted on.
+        This is used to move the robot to the right.
+        '''
+        if self.right:
+            w1 = self.knee.side_walking_up()
+        else:
+            w1 = self.knee.side_walking_down()
+        w2 = self.shoulder.center()
+        return w1 or w2
+
+
+############################side walking -end-############################
+    
+    
+    
+############################Dancing############################
+    
+    def dance_move_ahead(self) -> bool:
+        '''This makes the leg go to the very front or very back of the robot depended on the position of the shoulder.
+        The knee is raised or lowered depended on the side where it is mounted on.
+        This is used to make the robot dance.
+        '''
+        if self.right:
+            w1 = self.knee.dancing_up()
+        else:
+            w1 = self.knee.dancing_down()
+        w2 = self.shoulder.dancing_ahead()
+        return w1 or w2
+    
+    def dance_move_center(self) -> bool:
+        '''This makes the leg go to the center, which means setting the servo on 90 degrees.
+        The knee is raised or lowered depended on the side where it is mounted on.
+        This is used to make the robot dance.
+        '''
+        if self.right:
+            w1 = self.knee.dancing_down()
+        else:
+            w1 = self.knee.dancing_up()
+        w2 = self.shoulder.dancing_center()
+        return w1 or w2
+    
+    
+############################Dancing -end-############################
     
     
     def park(self):
-        '''This streteches the leg.'''
+        '''This stretches the leg.'''
         self.knee.park()
         self.shoulder.park()
         
@@ -121,7 +209,7 @@ class Leg:
 def main():
     '''This file, executed, taps the leg.'''
     l = Leg(0, False, False, "rear left")
-    l.tap()
+    l.calibrate()
     
 if __name__ == "__main__":
     # execute only if run as a script
