@@ -531,12 +531,18 @@ class Crawly:
 ############################Button dependencies############################
 
     def front_handler(self, _):
+        '''This function gets called when the front button is pressed.
+        It is used to switch between curled walking and normal walking.
+        '''
         if self.curl_mode:
             self.curl_mode = False
         else:
             self.curl_mode = True
 
     def rear_handler(self, _):
+        '''This function gets called when the rear button is pressed.
+        It is used to switch between dancing and walking.
+        '''
         if self.dance_mode:
             self.dance_mode = False
         else:
@@ -544,6 +550,7 @@ class Crawly:
 
 
     def _check_if_normal(self):
+        '''This function is used in the auto_pilot function.'''
         if self.dance_mode:
             self.dance(1000)
         else:
@@ -553,6 +560,7 @@ class Crawly:
                 pass
 
     def _check_if_curled(self):
+        '''This function is used in the curled_auto_pilot function.'''
         if self.dance_mode:
             self.dance(1000)
         else:
@@ -562,6 +570,7 @@ class Crawly:
                 self.auto_pilot()
 
     def _check_if_dancing(self):
+        '''This function is used in the dance function.'''
         if self.dance_mode:
             pass
         else:
@@ -575,7 +584,7 @@ class Crawly:
 
     
 def main():
-    '''Starting this file makes the robot dance'''
+    '''Starting this file makes the robot work on auto pilot.'''
     try: 
         c = Crawly(True)
         c.auto_pilot()
