@@ -28,8 +28,14 @@ class Crawly:
         if robotlibrary.config.US is not None:
             self.us = Ultra(robotlibrary.config.US)
         
-        self.button_front = Button(19)
-        self.button_rear = Button(18)
+        if robotlibrary.config.CRAWLY_BUTTONS:
+            self.button_front = Button(robotlibrary.config.CRAWLY_BUTTON_FRONT, self.front_handler)
+            self.button_rear = Button(robotlibrary.config.CRAWLY_BUTTON_REAR, self.rear_handler)
+
+            self.curl_mode = False
+            self.dance_mode = False
+
+        
         
 ############################Normal movement############################ 
 
@@ -404,6 +410,10 @@ class Crawly:
         try:
             while True:
                 while self.us.get_dist() > distance:
+                    if robotlibrary.config.CRAWLY_BUTTONS:
+                        self._check_if_normal()
+                    else:
+                        pass
                     self.move_forward(1)
                 
                 is_object = self._lookout(self.us.get_dist())
@@ -431,6 +441,10 @@ class Crawly:
         try:
             while True:
                 while self.us.get_dist() > distance:
+                    if robotlibrary.config.CRAWLY_BUTTONS:
+                        self._check_if_curled()
+                    else:
+                        pass
                     self.curled_move_forward(1)
                 
                 is_object = self._lookout(self.us.get_dist())
@@ -458,6 +472,10 @@ class Crawly:
     def dance(self, repeats):
         '''This function makes the robot dance. (It's awesome)'''
         for i in range(0, repeats, 1):
+            if robotlibrary.config.CRAWLY_BUTTONS:
+                self._check_if_dancing()
+            else:
+                pass
             dance = True
             # First half of the dance move.
             while dance:
@@ -507,12 +525,60 @@ class Crawly:
 
 
 ############################Positions -end-############################
+
+
+
+############################Button dependencies############################
+
+    def front_handler(self, _):
+        if self.curl_mode:
+            self.curl_mode = False
+        else:
+            self.curl_mode = True
+
+    def rear_handler(self, _):
+        if self.dance_mode:
+            self.dance_mode = False
+        else:
+            self.dance_mode = True
+
+
+    def _check_if_normal(self):
+        if self.dance_mode:
+            self.dance(1000)
+        else:
+            if self.curl_mode:
+                self.curled_auto_pilot(20)
+            else:
+                pass
+
+    def _check_if_curled(self):
+        if self.dance_mode:
+            self.dance(1000)
+        else:
+            if self.curl_mode:
+                pass
+            else:
+                self.auto_pilot(20)
+
+    def _check_if_dancing(self):
+        if self.dance_mode:
+            pass
+        else:
+            if not self.curl_mode:
+                self.auto_pilot(20)
+            else:
+                self.curled_auto_pilot(20)
+
+
+############################Button dependencies -end-############################
+
     
 def main():
     '''Starting this file makes the robot dance'''
     try: 
         c = Crawly(True)
-        c.dance(20)
+        c.auto_pilot(20)
     except KeyboardInterrupt:
         c.park()
         sleep(1)
