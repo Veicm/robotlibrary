@@ -20,7 +20,6 @@ class Button:
                 print("Button pressed")
             else:
                 print("Button unpressed")
-        utime.sleep(0.5)
 
     def export(self) -> bool:
         '''returns False as long as the button is unpressed and True when the button is pressed.'''
@@ -28,8 +27,6 @@ class Button:
             return True
         else:
             return False
-        utime.sleep(0.1)
-
 
 
 def main():
