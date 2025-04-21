@@ -1,11 +1,22 @@
 from machine import Pin
 import utime
 
+def is_wifi() -> bool:
+    '''This function is used to check if the program run on a normal pico or a pico-w.'''
+    try:
+        import network
+        return True
+    except Exception:
+        return False
+
 class Light:
     '''This class manages a one-color LED'''
 
     def __init__(self, pin):
-        self.light = Pin(pin, Pin.OUT)
+        if pin == 25 and is_wifi():
+            self.light = Pin("LED", Pin.OUT)
+        else:
+            self.light = Pin(pin, Pin.OUT)
 
 
     def on(self):
