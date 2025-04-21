@@ -136,7 +136,7 @@ class Crawly:
 
     #############avoid objects#####################
 
-    def _avoid_to_left(self, distance):
+    def _avoid_to_left(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This makes the crawler turn to the left while a object is detected.'''
         self.turn_left(1)
         while self.us.get_dist() < distance:
@@ -144,7 +144,7 @@ class Crawly:
         self.turn_left(2)
         self.calibrate
 
-    def _avoid_to_right(self, distance):
+    def _avoid_to_right(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This makes the crawler turn to the right while a object is detected.'''
         self.turn_right(1)
         while self.us.get_dist() < distance:
@@ -153,7 +153,7 @@ class Crawly:
         self.calibrate
 
 
-    def avoid_objects(self, distance):
+    def avoid_objects(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This makes the crawler walk ahead as long as no object is detected'''
         repeats = 0
         try:
@@ -278,14 +278,14 @@ class Crawly:
 
     #############avoid objects#####################
 
-    def _curled_avoid_to_left(self, distance):
+    def _curled_avoid_to_left(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         self.curled_turn_left(1)
         while self.us.get_dist() < distance:
             self.curled_turn_left(1)
         self.curled_turn_left(2)
         self.walking_curl()
 
-    def _curled_avoid_to_right(self, distance):
+    def _curled_avoid_to_right(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         self.curled_turn_right(1)
         while self.us.get_dist() < distance:
             self.curled_turn_right(1)
@@ -293,7 +293,7 @@ class Crawly:
         self.walking_curl()
 
 
-    def curled_avoid_objects(self, distance):
+    def curled_avoid_objects(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         repeats = 0
         try:
             while True:
@@ -373,14 +373,14 @@ class Crawly:
 
 ############################walk around############################
 
-    def go_to_left(self, distance):
+    def go_to_left(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This makes the robot moves to the left, while an object is closer than the given distance.'''
         self.move_left(1)
         while self.us.get_dist() < distance:
             self.move_left(1)
         self.move_left(2)
 
-    def go_to_right(self, distance):
+    def go_to_right(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This makes the robot moves to the right, while an object is closer than the given distance.'''
         self.move_right(1)
         while self.us.get_dist() < distance:
@@ -404,7 +404,7 @@ class Crawly:
         else:
             return False
 
-    def auto_pilot (self, distance):
+    def auto_pilot (self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This function makes the robot run on auto pilot by combining many other functions.'''
         repeats = 0
         try:
@@ -435,7 +435,7 @@ class Crawly:
             self.calibrate
             print("program terminated by user")
 
-    def curled_auto_pilot (self, distance):
+    def curled_auto_pilot (self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
         '''This function makes the robot run on auto pilot an walk on his tiptoes by combining many other functions.'''
         repeats = 0
         try:
@@ -548,7 +548,7 @@ class Crawly:
             self.dance(1000)
         else:
             if self.curl_mode:
-                self.curled_auto_pilot(20)
+                self.curled_auto_pilot()
             else:
                 pass
 
@@ -559,16 +559,16 @@ class Crawly:
             if self.curl_mode:
                 pass
             else:
-                self.auto_pilot(20)
+                self.auto_pilot()
 
     def _check_if_dancing(self):
         if self.dance_mode:
             pass
         else:
             if not self.curl_mode:
-                self.auto_pilot(20)
+                self.auto_pilot()
             else:
-                self.curled_auto_pilot(20)
+                self.curled_auto_pilot()
 
 
 ############################Button dependencies -end-############################
@@ -578,7 +578,7 @@ def main():
     '''Starting this file makes the robot dance'''
     try: 
         c = Crawly(True)
-        c.auto_pilot(20)
+        c.auto_pilot()
     except KeyboardInterrupt:
         c.park()
         sleep(1)

@@ -91,6 +91,10 @@ CRAWLY_BUTTON_REAR = 18
 PRESSED = 0
 UNPRESSED = 1
 
+# Distance
+CRAWLY_MIN_DISTANCE = 20
+
+
 
 ### Type definitions
 SHOULDER_FRONT = 4
