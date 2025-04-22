@@ -2,6 +2,9 @@
 from robotlibrary.ultrasonic import Ultra
 from robotlibrary.crawly_leg import Leg
 from robotlibrary.button import Button
+from robotlibrary.rainbow_light import Rainbow_Light
+from robotlibrary.light import Light
+from robotlibrary.buzzer import Buzzer
 import robotlibrary.config
 
 ########## Bluetooth
@@ -14,11 +17,12 @@ from robotlibrary.bluetooth.parser import decode_motor, encode_motor
 #import machine, sys, utime, random
 from time import sleep
 import utime
+import random
 
 
 class Crawly:
     '''This is the central class which manages and uses all the other components of the robot. The parameters are defined in config.py'''
-    def __init__(self,rc):
+    def __init__(self,rc, button_mode=True):
         self.legs = {
             "front_right" : Leg(6, True, True, "front right"),
             "rear_right" : Leg(4, True, False, "rear right"),
@@ -27,13 +31,30 @@ class Crawly:
             }
         if robotlibrary.config.US is not None:
             self.us = Ultra(robotlibrary.config.US)
-        
-        if robotlibrary.config.CRAWLY_BUTTONS:
+
+        self.button_mode = button_mode
+        if button_mode:
             self.button_front = Button(robotlibrary.config.CRAWLY_BUTTON_FRONT, self.front_handler)
             self.button_rear = Button(robotlibrary.config.CRAWLY_BUTTON_REAR, self.rear_handler)
 
             self.curl_mode = False
             self.dance_mode = False
+        
+        if robotlibrary.config.INTERNAL_LED is not None:
+            self.internal_led = Light(robotlibrary.config.INTERNAL_LED)
+        else:
+            self.internal_led = None
+        
+        if robotlibrary.config.CRAWLY_BUZZER is not None:
+            self.buzzer = Buzzer(robotlibrary.config.CRAWLY_BUZZER)
+        else:
+            self.buzzer = None
+
+        if robotlibrary.config.CRAWLY_RAINBOW_LIGHT is not None:
+            self.rainbow_light = Rainbow_Light(robotlibrary.config.CRAWLY_RAINBOW_LIGHT, robotlibrary.config.CRAWLY_RAINBOW_LIGHT_NUMBER)
+        else:
+            self.rainbow_light = None
+
 
         
         
@@ -409,21 +430,35 @@ class Crawly:
         repeats = 0
         try:
             while True:
+                if self.rainbow_light:
+                    self.rainbow_light.all_off()
                 while self.us.get_dist() > distance:
-                    if robotlibrary.config.CRAWLY_BUTTONS:
+                    if self.button_mode:
                         self._check_if_normal()
-                    else:
-                        pass
                     self.move_forward(1)
-                
+                    if self.internal_led:
+                        self.internal_led.on()
+
+                if self.internal_led:
+                    self.internal_led.off()
+                if self.rainbow_light:
+                    self.rainbow_light.set_all_color(255, 255, 0)
+                if self.buzzer:
+                    self.buzzer.make_sound(50)
+                    utime.sleep(0.8)
+                    self.buzzer.silence()
                 is_object = self._lookout(self.us.get_dist())
 
                 if is_object:
+                    if self.rainbow_light:
+                        self.rainbow_light.set_all_color(0, 222, 131)
                     if repeats % 2 == 0:
                         self.go_to_right(distance)
                     elif repeats % 2 == 1:
                         self.go_to_left(distance)
                 else:
+                    if self.rainbow_light:
+                        self.rainbow_light.set_all_color(0, 255,255)
                     if repeats % 2 == 0:
                         self._avoid_to_right(distance)
                     elif repeats % 2 == 1:
@@ -432,6 +467,12 @@ class Crawly:
                 utime.sleep(0.3)
                 repeats += 1
         except KeyboardInterrupt:
+            if self.rainbow_light:
+                self.rainbow_light.all_off()
+            if self.internal_led:
+                self.internal_led.off()
+            if self.buzzer:
+                self.buzzer.silence()
             self.calibrate
             print("program terminated by user")
 
@@ -440,21 +481,37 @@ class Crawly:
         repeats = 0
         try:
             while True:
+                if self.rainbow_light:
+                    self.rainbow_light.all_off()
                 while self.us.get_dist() > distance:
-                    if robotlibrary.config.CRAWLY_BUTTONS:
+                    if self.button_mode:
                         self._check_if_curled()
                     else:
                         pass
                     self.curled_move_forward(1)
-                
+                    if self.internal_led:
+                        self.internal_led.on()
+
+                if self.internal_led:
+                    self.internal_led.off()
+                if self.rainbow_light:
+                    self.rainbow_light.set_all_color(255, 255, 0)
+                if self.buzzer:
+                    self.buzzer.make_sound(50)
+                    utime.sleep(0.8)
+                    self.buzzer.silence()
                 is_object = self._lookout(self.us.get_dist())
 
                 if is_object:
+                    if self.rainbow_light:
+                        self.rainbow_light.set_all_color(0, 222, 131)
                     if repeats % 2 == 0:
                         self.go_to_right(distance)
                     elif repeats % 2 == 1:
                         self.go_to_left(distance)
                 else:
+                    if self.rainbow_light:
+                        self.rainbow_light.set_all_color(0, 255,255)
                     if repeats % 2 == 0:
                         self._curled_avoid_to_right(distance)
                     elif repeats % 2 == 1:
@@ -463,6 +520,12 @@ class Crawly:
                 utime.sleep(0.3)
                 repeats += 1
         except KeyboardInterrupt:
+            if self.rainbow_light:
+                self.rainbow_light.all_off()
+            if self.internal_led:
+                self.internal_led.off()
+            if self.buzzer:
+                self.buzzer.silence()
             self.calibrate
             print("program terminated by user")
 
@@ -471,11 +534,11 @@ class Crawly:
 
     def dance(self, repeats):
         '''This function makes the robot dance. (It's awesome)'''
+        if self.internal_led:
+            self.internal_led.off()
         for i in range(0, repeats, 1):
-            if robotlibrary.config.CRAWLY_BUTTONS:
+            if self.button_mode:
                 self._check_if_dancing()
-            else:
-                pass
             dance = True
             # First half of the dance move.
             while dance:
@@ -484,6 +547,8 @@ class Crawly:
                 d3 = self.legs["rear_right"].dance_move_center()
                 d4 = self.legs["front_left"].dance_move_center()
                 dance = d1 or d2 or d3 or d4
+                if self.rainbow_light:
+                    self.rainbow_light.set_all_color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
             
             dance = True
             # Second half of the dance move.
@@ -492,8 +557,11 @@ class Crawly:
                 d2 = self.legs["rear_left"].dance_move_center()
                 d3 = self.legs["rear_right"].dance_move_ahead()
                 d4 = self.legs["front_left"].dance_move_ahead()
-                
                 dance = d1 or d2 or d3 or d4
+                if self.rainbow_light:
+                    self.rainbow_light.set_all_color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        if self.rainbow_light:
+            self.rainbow_light.all_off()
 
 ############################Positions############################
 
@@ -574,6 +642,8 @@ class Crawly:
         if self.dance_mode:
             pass
         else:
+            if self.rainbow_light:
+                self.rainbow_light.all_off()
             if not self.curl_mode:
                 self.auto_pilot()
             else:

@@ -29,6 +29,7 @@ MR=14
 US=16
 IR=None #11
 SERVO=None #9
+INTERNAL_LED=25
 
 ########## Configuration for the Joystick remote control
 
@@ -84,12 +85,18 @@ CRAWLY_DANCING_UP_ANGLE = 120
 CRAWLY_DANCING_DOWN_ANGLE = 170
 
 # Buttons
-CRAWLY_BUTTONS = True
 CRAWLY_BUTTON_FRONT = 19
 CRAWLY_BUTTON_REAR = 18
 
 PRESSED = 0
 UNPRESSED = 1
+
+# Configuration for the Buzzer
+CRAWLY_BUZZER = 9 # set none if you don't use it
+
+# Configuration for the WS2812 rainbow lights
+CRAWLY_RAINBOW_LIGHT = 22 # set none if you don't use it
+CRAWLY_RAINBOW_LIGHT_NUMBER = 2 # defines how many LEDS are on the board
 
 # Distance
 CRAWLY_MIN_DISTANCE = 20
