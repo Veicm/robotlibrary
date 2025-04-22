@@ -1,5 +1,5 @@
 > [!IMPORTANT]  
-> This Branch contains many additions wrote by my self
+> This Branch contains many additions I wrote by my self.
 # Robotlibrary for Raspberry Pi Pico
 ## Project description
 This is a library written in micropython for robots based on the Raspberry Pi Pico. The follwing sensors / parts can be used with this: 
