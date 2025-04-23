@@ -6,7 +6,7 @@ class Servo:
     '''This class manages the servo motor that turns the ultrasonic sensor. You need a servo motor installed to get use out of this. 
     Don't use directly or edit if you don't know what you are doing.'''
     
-    def __init__(self,pin,inverted, min_duty, max_duty):
+    def __init__(self, pin, inverted=False, min_duty=robotlibrary.config.SERVO_MIN_DUTY, max_duty=robotlibrary.config.SERVO_MAX_DUTY):
         self.inverted = inverted
         self.pin=PWM(Pin(pin))
         self.pin.freq(50)
