@@ -43,7 +43,7 @@ class Joint:
         return self.__min_angle
 
     @min_angle.setter
-    def set_min_angle(a):
+    def set_min_angle(self, a):
         self.__min_angle = a
 
     @property
@@ -51,7 +51,7 @@ class Joint:
         return self.__max_angle
 
     @max_angle.setter
-    def set_max_angle(a):
+    def set_max_angle(self, a):
         self.__max_angle = a
         
     def up(self):
