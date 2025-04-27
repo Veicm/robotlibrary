@@ -22,7 +22,7 @@ import random
 
 class Crawly:
     '''This is the central class which manages and uses all the other components of the robot. The parameters are defined in config.py'''
-    def __init__(self,rc, button_mode=True):
+    def __init__(self, rc, button_mode=True):
         self.legs = {
             "front_right" : Leg(6, True, True, "front right"),
             "rear_right" : Leg(4, True, False, "rear right"),
