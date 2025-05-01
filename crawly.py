@@ -5,7 +5,7 @@ from robotlibrary.button import Button
 from robotlibrary.rainbow_light import Rainbow_Light
 from robotlibrary.light import Light
 from robotlibrary.buzzer import Buzzer
-import robotlibrary.config
+import robotlibrary.config.crawly_config
 
 ########## Bluetooth
 # This is not implemented yet.
@@ -29,29 +29,29 @@ class Crawly:
             "rear_left" : Leg(2, False, False, "rear left"),
             "front_left" : Leg(0, False, True, "front left")
             }
-        if robotlibrary.config.US is not None:
-            self.us = Ultra(robotlibrary.config.US)
+        if robotlibrary.config.crawly_config.US is not None:
+            self.us = Ultra(robotlibrary.config.crawly_config.US)
 
         self.button_mode = button_mode
         if button_mode:
-            self.button_front = Button(robotlibrary.config.CRAWLY_BUTTON_FRONT, self.front_handler)
-            self.button_rear = Button(robotlibrary.config.CRAWLY_BUTTON_REAR, self.rear_handler)
+            self.button_front = Button(robotlibrary.config.crawly_config.CRAWLY_BUTTON_FRONT, self.front_handler)
+            self.button_rear = Button(robotlibrary.config.crawly_config.CRAWLY_BUTTON_REAR, self.rear_handler)
 
             self.curl_mode = False
             self.dance_mode = False
         
-        if robotlibrary.config.INTERNAL_LED is not None:
-            self.internal_led = Light(robotlibrary.config.INTERNAL_LED)
+        if robotlibrary.config.crawly_config.INTERNAL_LED is not None:
+            self.internal_led = Light(robotlibrary.config.crawly_config.INTERNAL_LED)
         else:
             self.internal_led = None
         
-        if robotlibrary.config.CRAWLY_BUZZER is not None:
-            self.buzzer = Buzzer(robotlibrary.config.CRAWLY_BUZZER)
+        if robotlibrary.config.crawly_config.CRAWLY_BUZZER is not None:
+            self.buzzer = Buzzer(robotlibrary.config.crawly_config.CRAWLY_BUZZER)
         else:
             self.buzzer = None
 
-        if robotlibrary.config.CRAWLY_RAINBOW_LIGHT is not None:
-            self.rainbow_light = Rainbow_Light(robotlibrary.config.CRAWLY_RAINBOW_LIGHT, robotlibrary.config.CRAWLY_RAINBOW_LIGHT_NUMBER)
+        if robotlibrary.config.crawly_config.CRAWLY_RAINBOW_LIGHT is not None:
+            self.rainbow_light = Rainbow_Light(robotlibrary.config.crawly_config.CRAWLY_RAINBOW_LIGHT, robotlibrary.config.crawly_config.CRAWLY_RAINBOW_LIGHT_NUMBER)
         else:
             self.rainbow_light = None
 
@@ -157,7 +157,7 @@ class Crawly:
 
     #############avoid objects#####################
 
-    def _avoid_to_left(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def _avoid_to_left(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This makes the crawler turn to the left while a object is detected.'''
         self.turn_left(1)
         while self.us.get_dist() < distance:
@@ -165,7 +165,7 @@ class Crawly:
         self.turn_left(2)
         self.calibrate
 
-    def _avoid_to_right(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def _avoid_to_right(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This makes the crawler turn to the right while a object is detected.'''
         self.turn_right(1)
         while self.us.get_dist() < distance:
@@ -174,7 +174,7 @@ class Crawly:
         self.calibrate
 
 
-    def avoid_objects(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def avoid_objects(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This makes the crawler walk ahead as long as no object is detected'''
         repeats = 0
         try:
@@ -299,14 +299,14 @@ class Crawly:
 
     #############avoid objects#####################
 
-    def _curled_avoid_to_left(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def _curled_avoid_to_left(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         self.curled_turn_left(1)
         while self.us.get_dist() < distance:
             self.curled_turn_left(1)
         self.curled_turn_left(2)
         self.walking_curl()
 
-    def _curled_avoid_to_right(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def _curled_avoid_to_right(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         self.curled_turn_right(1)
         while self.us.get_dist() < distance:
             self.curled_turn_right(1)
@@ -314,7 +314,7 @@ class Crawly:
         self.walking_curl()
 
 
-    def curled_avoid_objects(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def curled_avoid_objects(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         repeats = 0
         try:
             while True:
@@ -394,14 +394,14 @@ class Crawly:
 
 ############################walk around############################
 
-    def go_to_left(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def go_to_left(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This makes the robot moves to the left, while an object is closer than the given distance.'''
         self.move_left(1)
         while self.us.get_dist() < distance:
             self.move_left(1)
         self.move_left(2)
 
-    def go_to_right(self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def go_to_right(self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This makes the robot moves to the right, while an object is closer than the given distance.'''
         self.move_right(1)
         while self.us.get_dist() < distance:
@@ -425,7 +425,7 @@ class Crawly:
         else:
             return False
 
-    def auto_pilot (self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def auto_pilot (self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This function makes the robot run on auto pilot by combining many other functions.'''
         repeats = 0
         try:
@@ -476,7 +476,7 @@ class Crawly:
             self.calibrate
             print("program terminated by user")
 
-    def curled_auto_pilot (self, distance=robotlibrary.config.CRAWLY_MIN_DISTANCE):
+    def curled_auto_pilot (self, distance=robotlibrary.config.crawly_config.CRAWLY_MIN_DISTANCE):
         '''This function makes the robot run on auto pilot an walk on his tiptoes by combining many other functions.'''
         repeats = 0
         try:

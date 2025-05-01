@@ -3,7 +3,7 @@ from robotlibrary.motor import Motor
 from robotlibrary.ultrasonic import Ultra
 from robotlibrary.infrared import IR
 from robotlibrary.servo import Servo
-import robotlibrary.config
+import robotlibrary.config.general_config
 
 ########## Bluetooth
 try: 
@@ -22,21 +22,21 @@ from time import sleep
 class Robot:
     '''This is the central class which manages and uses all the other components of the robot. The parameters are defined in config.py'''
     def __init__(self,rc):
-        if robotlibrary.config.ML is not None: 
-            self.ml = Motor(robotlibrary.config.ML)
-        if robotlibrary.config.MR is not None:
-            self.mr = Motor(robotlibrary.config.MR)
-        if robotlibrary.config.US is not None:
-            self.us = Ultra(robotlibrary.config.US)
-        if robotlibrary.config.IR is not None:
-            self.ir = IR(robotlibrary.config.IR,self)
-        if robotlibrary.config.SERVO is not None:
-            self.servo = Servo(robotlibrary.config.SERVO, False, robotlibrary.config.SERVO_MIN_DUTY, robotlibrary.config.SERVO_MAX_DUTY)
+        if robotlibrary.config.general_config.ML is not None: 
+            self.ml = Motor(robotlibrary.config.general_config.ML)
+        if robotlibrary.config.general_config.MR is not None:
+            self.mr = Motor(robotlibrary.config.general_config.MR)
+        if robotlibrary.config.general_config.US is not None:
+            self.us = Ultra(robotlibrary.config.general_config.US)
+        if robotlibrary.config.general_config.IR is not None:
+            self.ir = IR(robotlibrary.config.general_config.IR,self)
+        if robotlibrary.config.general_config.SERVO is not None:
+            self.servo = Servo(robotlibrary.config.general_config.SERVO, False, robotlibrary.config.general_config.SERVO_MIN_DUTY, robotlibrary.config.general_config.SERVO_MAX_DUTY)
         self.speed = 0
         self.new_speed = 0
         self.last_turn_right = random.randint(0,1) == 0
         if rc and BLUETOOTH_CHIP:
-            self.controller = BLEPeripheral(robotlibrary.config.ROBOT_NAME, add_robot_stuff=True)
+            self.controller = BLEPeripheral(robotlibrary.config.general_config.ROBOT_NAME, add_robot_stuff=True)
             def read(buffer: memoryview):
                 speed, turn, forward = decode_motor(bytes(buffer))
                 #print(f"Speed: {speed}, Turn: {turn}, forward: {forward}") # uncomment for debugging

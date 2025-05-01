@@ -1,5 +1,5 @@
 from machine import Pin,ADC,Timer
-from robotlibrary.config import MIN_DUTY, MAX_DUTY, X_MEDIAN, Y_MEDIAN, DEBOUNCE_WAIT
+from robotlibrary.config.general_config import JS_MIN_DUTY, JS_MAX_DUTY, JS_X_MEDIAN, JS_Y_MEDIAN, DEBOUNCE_WAIT
 import utime
 from robotlibrary.motor import Motor
 
@@ -31,21 +31,21 @@ class Joystick:
     
     def get_speed(self,s):
         speed = 0
-        if s < Y_MEDIAN-300:
-            speed = abs(MAX_DUTY-s*2)
-        elif s > Y_MEDIAN+300:
-            speed = -abs(MAX_DUTY-s*2)    
+        if s < JS_Y_MEDIAN-300:
+            speed = abs(JS_MAX_DUTY-s*2)
+        elif s > JS_Y_MEDIAN+300:
+            speed = -abs(JS_MAX_DUTY-s*2)    
         else:
             speed = 0
         if speed > -4000 and speed < 4000:
                 speed = 0
-        return int(100/MAX_DUTY*speed)
+        return int(100/JS_MAX_DUTY*speed)
     
     def get_direction(self,d):
         direction = 0
-        if d < X_MEDIAN-200:
-            direction = -abs(90-(90/X_MEDIAN*d))
-        elif d > X_MEDIAN+200:
+        if d < JS_X_MEDIAN-200:
+            direction = -abs(90-(90/JS_X_MEDIAN*d))
+        elif d > JS_X_MEDIAN+200:
             direction = abs(90/65535*d)
         else:
             direction = 0
