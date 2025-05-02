@@ -18,13 +18,18 @@ A4  = 440
 As4 = 466
 B4  = 494
 C5  = 523
+D5  = 587
+E5  = 659
+F5  = 698
+G5  = 784
+A5  = 880
 REST = 0
 
 
 class Buzzer:
     '''This class manages an active buzzer, you can play a certain tone or a melody of you choice.'''
     def __init__(self, pin):
-        self.buzzer = PWM(Pin(9))
+        self.buzzer = PWM(Pin(pin))
 
         # melody:
         self.mario_melody = [
@@ -59,6 +64,17 @@ class Buzzer:
             (G4, 300), (A4, 300), (B3, 600)
         ]
 
+        self.never_gonna_give_you_up = [
+            (D5, 300), (E5, 300), (C5, 300), (A4, 300), (A4, 300), (REST, 100),
+            (D5, 300), (E5, 300), (C5, 300), (A4, 300), (A4, 300), (REST, 100),
+
+            (C5, 300), (C5, 300), (C5, 150), (D5, 150), (E5, 300),
+            (C5, 300), (A4, 300), (A4, 300), (REST, 200),
+
+            (F4, 300), (G4, 300), (A4, 300), (A4, 300),
+            (F4, 300), (G4, 300), (A4, 300), (A4, 300), (REST, 200),
+]
+
 
     def make_sound(self, frequency):
         self.buzzer.freq(frequency)# Hz
@@ -83,11 +99,13 @@ class Buzzer:
 
     def play_melody(self, melody: str):
         '''This function is used to play a certain melody.
-        You can select between "mario" and "zelda".'''
+        You can select between "mario", "zelda" and "rickroll".'''
         if melody == "mario":
             theme = self.mario_melody
         elif melody == "zelda":
             theme = self.zelda_lullaby
+        elif melody == "rickroll":
+            theme = self.never_gonna_give_you_up
         else:
             self.make_sound(100)
             utime.sleep(1)
