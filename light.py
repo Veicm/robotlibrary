@@ -26,10 +26,9 @@ class Light:
         self.light.value(0)
 
     def blink(self, speed, repeats):
-        for i in range(0, repeats, 1):
+        for _ in range(repeats):
             self.on()
             utime.sleep(1/speed)
             self.off()
             utime.sleep(1/speed)
             repeats -= 1
-            

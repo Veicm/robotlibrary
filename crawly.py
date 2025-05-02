@@ -62,7 +62,7 @@ class Crawly:
 
     def move_forward(self, steps):
         '''This makes the crawler move forward in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -85,7 +85,7 @@ class Crawly:
 
     def move_backward(self, steps):
         '''This makes the crawler move backward in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -109,7 +109,7 @@ class Crawly:
 
     def turn_left(self, steps):
         '''This makes the crawler turn to the left in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -133,7 +133,7 @@ class Crawly:
 
     def turn_right(self, steps):
         '''This makes the crawler turn to the right in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -205,7 +205,7 @@ class Crawly:
 
     def curled_move_forward(self, steps):
         '''This makes the crawler move forward on tiptoes in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -228,7 +228,7 @@ class Crawly:
 
     def curled_move_backward(self, steps):
         '''This makes the crawler move backward on tiptoes in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -252,7 +252,7 @@ class Crawly:
 
     def curled_turn_left(self, steps):
         '''This makes the crawler turn to the left on tiptoes in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -275,7 +275,7 @@ class Crawly:
 
     def curled_turn_right(self, steps):
         '''This makes the crawler turn to the right on tiptoes in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -344,7 +344,7 @@ class Crawly:
  
     def move_left(self, steps):
         '''This makes the crawler move to the left in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -367,7 +367,7 @@ class Crawly:
 
     def move_right(self, steps):
         '''This makes the crawler move to the right in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
-        for i in range(0, steps, 1):
+        for _ in range(steps):
             walk = True
             # First half of one step cycle.
             while walk:
@@ -536,7 +536,7 @@ class Crawly:
         '''This function makes the robot dance. (It's awesome)'''
         if self.internal_led:
             self.internal_led.off()
-        for i in range(0, repeats, 1):
+        for _ in range(repeats):
             if self.button_mode:
                 self._check_if_dancing()
             dance = True
