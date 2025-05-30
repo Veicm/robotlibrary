@@ -1,4 +1,4 @@
-> [!IMPORTANT]  
+> [!NOTE]  
 > This branch contains many features I implemented myself.
 # Robotlibrary for Raspberry Pi Pico
 ## Project description
