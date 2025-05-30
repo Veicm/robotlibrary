@@ -6,13 +6,17 @@ from robotlibrary.rainbow_light import Rainbow_Light
 from robotlibrary.light import Light
 from robotlibrary.buzzer import Buzzer
 import robotlibrary.config.crawly_config
+from robotlibrary.network_control.receiver import CommandReceiver
 
 ########## Bluetooth
 # This is not implemented yet.
-import bluetooth
-from robotlibrary.bluetooth.peripheral import BLEPeripheral
-from robotlibrary.bluetooth.ble_services_definitions import ROBOT_UUID, MOTOR_RX_UUID, MOTOR_TX_UUID
-from robotlibrary.bluetooth.parser import decode_motor, encode_motor
+try:
+    import bluetooth
+    from robotlibrary.bluetooth.peripheral import BLEPeripheral
+    from robotlibrary.bluetooth.ble_services_definitions import ROBOT_UUID, MOTOR_RX_UUID, MOTOR_TX_UUID
+    from robotlibrary.bluetooth.parser import decode_motor, encode_motor
+except Exception:
+    pass
 
 #import machine, sys, utime, random
 from time import sleep
@@ -22,7 +26,7 @@ import random
 
 class Crawly:
     '''This is the central class which manages and uses all the other components of the robot. The parameters are defined in config.py'''
-    def __init__(self, rc, button_mode=True):
+    def __init__(self, rc, button_mode=True, gui_controlled=True): 
         self.legs = {
             "front_right" : Leg(6, True, True, "front right"),
             "rear_right" : Leg(4, True, False, "rear right"),
@@ -32,13 +36,23 @@ class Crawly:
         if robotlibrary.config.crawly_config.US is not None:
             self.us = Ultra(robotlibrary.config.crawly_config.US)
 
-        self.button_mode = button_mode
+        self.button_mode = button_mode or gui_controlled
         if button_mode:
-            self.button_front = Button(robotlibrary.config.crawly_config.CRAWLY_BUTTON_FRONT, self.front_handler)
-            self.button_rear = Button(robotlibrary.config.crawly_config.CRAWLY_BUTTON_REAR, self.rear_handler)
+            self.button_front = Button(robotlibrary.config.crawly_config.CRAWLY_BUTTON_FRONT, self.curled_handler)
+            self.button_rear = Button(robotlibrary.config.crawly_config.CRAWLY_BUTTON_REAR, self.dance_handler)
 
             self.curl_mode = False
             self.dance_mode = False
+        
+        if gui_controlled:
+            # to use the gui controlled option you have to install the robot_controller (https://github.com/Veicm/robot_controller) on your PC.
+            self.receiver = CommandReceiver("ssid", "password")
+            self.receiver.define("curl", self.curled_handler)
+            self.receiver.define("dance", self.dance_handler)
+            self.receiver.define("melody_mario", self.melody_mario_handler)
+
+            self.receiver.define("debug", self.debug_handler)
+            self.receiver.start()
         
         if robotlibrary.config.crawly_config.INTERNAL_LED is not None:
             self.internal_led = Light(robotlibrary.config.crawly_config.INTERNAL_LED)
@@ -55,7 +69,9 @@ class Crawly:
         else:
             self.rainbow_light = None
 
-
+    def get_angles(self):
+        for l in self.legs.values():
+            l.get_angles()
         
         
 ############################Normal movement############################ 
@@ -64,6 +80,7 @@ class Crawly:
         '''This makes the crawler move forward in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].forward_move_forward()
@@ -74,19 +91,21 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].forward_move_backward()
                 w2 = self.legs["rear_left"].forward_move_backward()
                 w3 = self.legs["rear_right"].forward_move_forward()
                 w4 = self.legs["front_left"].forward_move_forward()
-                
+
                 walk = w1 or w2 or w3 or w4
 
     def move_backward(self, steps):
         '''This makes the crawler move backward in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].backward_move_backward()
@@ -97,6 +116,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].backward_move_forward()
@@ -596,9 +616,9 @@ class Crawly:
 
 
 
-############################Button dependencies############################
+############################Handler############################
 
-    def front_handler(self, _):
+    def curled_handler(self, _):
         '''This function gets called when the front button is pressed.
         It is used to switch between curled walking and normal walking.
         '''
@@ -607,7 +627,7 @@ class Crawly:
         else:
             self.curl_mode = True
 
-    def rear_handler(self, _):
+    def dance_handler(self, _):
         '''This function gets called when the rear button is pressed.
         It is used to switch between dancing and walking.
         '''
@@ -616,6 +636,22 @@ class Crawly:
         else:
             self.dance_mode = True
 
+    def melody_mario_handler(self, _):
+        '''This function plays a mario melody.'''
+        if self.buzzer is not None:
+            self.buzzer.play_melody("mario")
+
+    def debug_handler(self, _):
+        '''This function is useful to debug the handler behavior.'''
+        print("Successfully triggered the debug handler.")
+
+
+
+############################Handler -end-############################
+
+
+
+############################Button dependencies############################
 
     def _check_if_normal(self):
         '''This function is used in the auto_pilot function.'''

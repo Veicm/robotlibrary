@@ -15,6 +15,10 @@ class Leg:
         self.knee = Joint(robotlibrary.config.crawly_config.KNEE, name, False, False, pin+1)
 
         self.right = right
+
+    def get_angles(self):
+        self.shoulder.get_angles()
+        self.knee.get_angles()
         
     def forward_move_forward(self) -> bool:
         '''This makes a small adjustment in the move forward of this leg. Returns True as long as the movement is NOT finished
@@ -22,7 +26,8 @@ class Leg:
         as the leg is raised in this movement.
         '''
         w1 = self.knee.up()
-        w2 = self.shoulder.forward()
+        if not w1:
+            w2 = self.shoulder.forward()
         return w1 or w2
     
     def forward_move_backward(self) -> bool:
@@ -31,7 +36,8 @@ class Leg:
         as the leg is lowered.
         '''
         w1 = self.knee.down()
-        w2 = self.shoulder.backward()
+        if not w1:
+            w2 = self.shoulder.backward()
         return w1 or w2
     
 
