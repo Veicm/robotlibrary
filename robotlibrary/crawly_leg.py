@@ -47,7 +47,8 @@ class Leg:
         as the leg is lowered.
         '''
         w1 = self.knee.down()
-        w2 = self.shoulder.forward()
+        if not w1:
+            w2 = self.shoulder.forward()
         return w1 or w2
  
     def backward_move_backward(self) -> bool:
@@ -56,7 +57,8 @@ class Leg:
         as the leg is raised in this movement.
         '''
         w1 = self.knee.up()
-        w2 = self.shoulder.backward()
+        if not w1:
+            w2 = self.shoulder.backward()
         return w1 or w2
     
 ############################curled movement############################
@@ -67,7 +69,8 @@ class Leg:
         as the leg is raised in this movement.
         '''
         w1 = self.knee.curled_up()
-        w2 = self.shoulder.forward()
+        if not w1:
+            w2 = self.shoulder.forward()
         return w1 or w2
     
     def curled_forward_move_backward(self) -> bool:
@@ -76,7 +79,8 @@ class Leg:
         as the leg is lowered.
         '''
         w1 = self.knee.curled_down()
-        w2 = self.shoulder.backward()
+        if not w1:
+            w2 = self.shoulder.backward()
         return w1 or w2
     
 
@@ -86,7 +90,8 @@ class Leg:
         as the leg is lowered.
         '''
         w1 = self.knee.curled_down()
-        w2 = self.shoulder.forward()
+        if not w1:
+            w2 = self.shoulder.forward()
         return w1 or w2
  
     def curled_backward_move_backward(self) -> bool:
@@ -95,7 +100,8 @@ class Leg:
         as the leg is raised in this movement.
         '''
         w1 = self.knee.curled_up()
-        w2 = self.shoulder.backward()
+        if not w1:
+            w2 = self.shoulder.backward()
         return w1 or w2
     
 
@@ -113,7 +119,8 @@ class Leg:
             w1 = self.knee.side_walking_up()
         else:
             w1 = self.knee.side_walking_down()
-        w2 = self.shoulder.ahead()
+        if not w1:
+            w2 = self.shoulder.ahead()
         return w1 or w2
     
     def left_move_center(self) -> bool:
@@ -125,7 +132,8 @@ class Leg:
             w1 = self.knee.side_walking_down()
         else:
             w1 = self.knee.side_walking_up()
-        w2 = self.shoulder.center()
+        if not w1:
+            w2 = self.shoulder.center()
         return w1 or w2
     
 
@@ -138,7 +146,8 @@ class Leg:
             w1 = self.knee.side_walking_down()
         else:
             w1 = self.knee.side_walking_up()
-        w2 = self.shoulder.ahead()
+        if not w1:
+            w2 = self.shoulder.ahead()
         return w1 or w2
  
     def right_move_center(self) -> bool:
@@ -150,7 +159,8 @@ class Leg:
             w1 = self.knee.side_walking_up()
         else:
             w1 = self.knee.side_walking_down()
-        w2 = self.shoulder.center()
+        if not w1:
+            w2 = self.shoulder.center()
         return w1 or w2
 
 

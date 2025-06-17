@@ -15,8 +15,9 @@ try:
     from robotlibrary.bluetooth.peripheral import BLEPeripheral
     from robotlibrary.bluetooth.ble_services_definitions import ROBOT_UUID, MOTOR_RX_UUID, MOTOR_TX_UUID
     from robotlibrary.bluetooth.parser import decode_motor, encode_motor
+    PICO_W = True
 except Exception:
-    pass
+    PICO_W = False
 
 #import machine, sys, utime, random
 from time import sleep
@@ -44,7 +45,7 @@ class Crawly:
             self.curl_mode = False
             self.dance_mode = False
         
-        if gui_controlled:
+        if gui_controlled and PICO_W:
             # to use the gui controlled option you have to install the robot_controller (https://github.com/Veicm/robot_controller) on your PC.
             self.receiver = CommandReceiver("ssid", "password")
             self.receiver.define("curl", self.curled_handler)
@@ -131,6 +132,7 @@ class Crawly:
         '''This makes the crawler turn to the left in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].forward_move_forward()
@@ -141,6 +143,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].forward_move_backward()
@@ -155,6 +158,7 @@ class Crawly:
         '''This makes the crawler turn to the right in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].backward_move_forward()
@@ -165,6 +169,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].backward_move_backward()
@@ -227,6 +232,7 @@ class Crawly:
         '''This makes the crawler move forward on tiptoes in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].curled_forward_move_forward()
@@ -237,6 +243,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].curled_forward_move_backward()
@@ -250,6 +257,7 @@ class Crawly:
         '''This makes the crawler move backward on tiptoes in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].curled_backward_move_backward()
@@ -260,6 +268,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].curled_backward_move_forward()
@@ -274,6 +283,7 @@ class Crawly:
         '''This makes the crawler turn to the left on tiptoes in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].curled_forward_move_forward()
@@ -284,6 +294,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].curled_forward_move_backward()
@@ -297,6 +308,7 @@ class Crawly:
         '''This makes the crawler turn to the right on tiptoes in on place in a coordinated way. Most of the functionality lies in the other classes Joint and Leg'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].curled_backward_move_forward()
@@ -307,6 +319,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].curled_backward_move_backward()
@@ -366,6 +379,7 @@ class Crawly:
         '''This makes the crawler move to the left in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].left_move_ahead()
@@ -376,6 +390,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].left_move_center()
@@ -389,6 +404,7 @@ class Crawly:
         '''This makes the crawler move to the right in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
+            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].right_move_ahead()# down
@@ -399,6 +415,7 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
+            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].right_move_center()# up
