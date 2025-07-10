@@ -47,7 +47,7 @@ class Crawly:
         
         if gui_controlled and PICO_W:
             # to use the gui controlled option you have to install the robot_controller (https://github.com/Veicm/robot_controller) on your PC.
-            self.receiver = CommandReceiver("ssid", "password")
+            self.receiver = CommandReceiver("THS-Legacy", "FreedomAlbinlooks4")
             self.receiver.define("curl", self.curled_handler)
             self.receiver.define("dance", self.dance_handler)
             self.receiver.define("melody_mario", self.melody_mario_handler)
@@ -88,9 +88,7 @@ class Crawly:
                 w2 = self.legs["rear_left"].forward_move_forward()
                 w3 = self.legs["rear_right"].forward_move_backward()
                 w4 = self.legs["front_left"].forward_move_backward()
-
                 walk = w1 or w2 or w3 or w4
-            
             walk = True
             self.get_angles()
             # Second half of one step cycle
@@ -99,7 +97,6 @@ class Crawly:
                 w2 = self.legs["rear_left"].forward_move_backward()
                 w3 = self.legs["rear_right"].forward_move_forward()
                 w4 = self.legs["front_left"].forward_move_forward()
-
                 walk = w1 or w2 or w3 or w4
 
     def move_backward(self, steps):
@@ -379,7 +376,6 @@ class Crawly:
         '''This makes the crawler move to the left in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
-            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].left_move_ahead()
@@ -390,7 +386,6 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
-            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].left_move_center()
@@ -404,7 +399,6 @@ class Crawly:
         '''This makes the crawler move to the right in a coordinated way. Most of the functionality lies in the other classes Joint and Leg.'''
         for _ in range(steps):
             walk = True
-            self.get_angles()
             # First half of one step cycle.
             while walk:
                 w1 = self.legs["front_right"].right_move_ahead()# down
@@ -415,7 +409,6 @@ class Crawly:
                 walk = w1 or w2 or w3 or w4
             
             walk = True
-            self.get_angles()
             # Second half of one step cycle
             while walk:
                 w1 = self.legs["front_right"].right_move_center()# up

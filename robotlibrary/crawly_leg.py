@@ -119,8 +119,7 @@ class Leg:
             w1 = self.knee.side_walking_up()
         else:
             w1 = self.knee.side_walking_down()
-        if not w1:
-            w2 = self.shoulder.ahead()
+        w2 = self.shoulder.ahead()
         return w1 or w2
     
     def left_move_center(self) -> bool:
@@ -132,8 +131,7 @@ class Leg:
             w1 = self.knee.side_walking_down()
         else:
             w1 = self.knee.side_walking_up()
-        if not w1:
-            w2 = self.shoulder.center()
+        w2 = self.shoulder.center()
         return w1 or w2
     
 
@@ -146,8 +144,7 @@ class Leg:
             w1 = self.knee.side_walking_down()
         else:
             w1 = self.knee.side_walking_up()
-        if not w1:
-            w2 = self.shoulder.ahead()
+        w2 = self.shoulder.ahead()
         return w1 or w2
  
     def right_move_center(self) -> bool:
@@ -159,8 +156,7 @@ class Leg:
             w1 = self.knee.side_walking_up()
         else:
             w1 = self.knee.side_walking_down()
-        if not w1:
-            w2 = self.shoulder.center()
+        w2 = self.shoulder.center()
         return w1 or w2
 
 

@@ -14,7 +14,7 @@ class Calculator:
         '''Calculates the necessary steps for the given angle d_angle to make a smooth movmeent'''
         #print(d_angle)
         gc.collect()
-        increment = stop/d_angle #This is one way to determine the increment. Others are better.
+        increment = 10/d_angle #This is one way to determine the increment. Others are better.
         calc_steps = d_angle/increment
         #The bigger the angle, the smaller the increment is noch a good idea.
         # Another possibility: increment = d_angle/100
@@ -34,4 +34,5 @@ class Calculator:
             #print(self.easer.ease_in_out_sine(i)*d_angle/sum_steps)
             steps.append(self.easer.ease_in_out_sine(i)*d_angle/sum_steps)
             i=i+increment
+        #steps.append(1)
         return deque(steps,len(steps))

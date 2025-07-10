@@ -1,5 +1,3 @@
-from easing.calculator import Calculator
-calc = Calculator()
 ########## Configuration for the Servos in the Crawly robot
 # If you mix different servo types with different duty cycles, you can use the type2 constant for this.
 SERVO_MIN_DUTY = 1350 # Change only if the servo doesn't move 180°.
@@ -70,14 +68,3 @@ HIP = 10
 # other
 US=16
 INTERNAL_LED=25
-
-# Eased movement belongings (all variables are deque's)
-## Normal/Curl movement
-NORMAL_FRONT_STEPS = calc.generate_angles(0, 2, CRAWLY_FRONT_FORWARD_ANGLE - CRAWLY_FRONT_BACKWARD_ANGLE)
-NORMAL_REAR_STEPS = calc.generate_angles(0, 2, CRAWLY_REAR_FORWARD_ANGLE - CRAWLY_REAR_BACKWARD_ANGLE)
-NORMAL_KNEE_STEPS = calc.generate_angles(0, 2, CRAWLY_DOWN_ANGLE - CRAWLY_UP_ANGLE)
-
-## Side walking movement
-SIDE_FRONT_STEPS = calc.generate_angles(0, 2, CRAWLY_SIDE_WALKING_FRONT_ANGLE - CRAWLY_SIDE_WALKING_CENTER_ANGLE)
-SIDE_REAR_STEPS = calc.generate_angles(0, 2, CRAWLY_SIDE_WALKING_CENTER_ANGLE - CRAWLY_SIDE_WALKING_REAR_ANGLE)
-SIDE_KNEE_STEPS = calc.generate_angles(0, 2, CRAWLY_SIDE_WALKING_DOWN_ANGLE - CRAWLY_SIDE_WALKING_UP_ANGLE)
