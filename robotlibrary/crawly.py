@@ -47,7 +47,7 @@ class Crawly:
         
         if gui_controlled and PICO_W:
             # to use the gui controlled option you have to install the robot_controller (https://github.com/Veicm/robot_controller) on your PC.
-            self.receiver = CommandReceiver("THS-Legacy", "FreedomAlbinlooks4")
+            self.receiver = CommandReceiver("ssid", "password")
             self.receiver.define("curl", self.curled_handler)
             self.receiver.define("dance", self.dance_handler)
             self.receiver.define("melody_mario", self.melody_mario_handler)
